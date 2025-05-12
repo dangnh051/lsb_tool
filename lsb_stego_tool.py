@@ -103,13 +103,13 @@ class LSBStegoApp:
                     index += 1
 
             img.save(output_path)
-            success_msg = f"Tin nhắn đã được giấu thành công vào {output_path}"
+            success_msg = f"The message has been successfully hidden in {output_path}"
             print(success_msg)
             self.status_var.set(success_msg)
-            messagebox.showinfo("Thành công", success_msg)
+            messagebox.showinfo("Successful", success_msg)
 
         except Exception as e:
-            error_msg = f"Không thể giấu tin nhắn: {e}"
+            error_msg = f"Can not hide message: {e}"
             print(f"Lỗi: {error_msg}")
             self.status_var.set(f"Lỗi: {e}")
             messagebox.showerror("Lỗi", error_msg)
@@ -118,7 +118,7 @@ class LSBStegoApp:
         input_path = self.extract_input_var.get()
 
         if not input_path:
-            error_msg = "Vui lòng chọn ảnh đầu vào!"
+            error_msg = "Please choose input!"
             print(f"Lỗi: {error_msg}")
             self.status_var.set(f"Lỗi: {error_msg}")
             messagebox.showerror("Lỗi", error_msg)
@@ -146,24 +146,24 @@ class LSBStegoApp:
                         byte_str = ''.join(byte_buffer)
                         byte = int(byte_str, 2)
                         if byte == 0:
-                            success_msg = f"Tin nhắn trích xuất: {message}"
+                            success_msg = f"Message: {message}"
                             print(success_msg)
                             self.status_var.set(success_msg)
-                            messagebox.showinfo("Tin nhắn", success_msg)
+                            messagebox.showinfo("Message", success_msg)
                             return
                         message += chr(byte)
                         byte_buffer = []
 
-            warning_msg = "Không tìm thấy tin nhắn hoặc tin nhắn quá dài!"
+            warning_msg = "Can not find the message or the message too long!"
             print(warning_msg)
             self.status_var.set(warning_msg)
-            messagebox.showwarning("Cảnh báo", warning_msg)
+            messagebox.showwarning("Warning", warning_msg)
 
         except Exception as e:
-            error_msg = f"Không thể trích xuất tin nhắn: {e}"
-            print(f"Lỗi: {error_msg}")
-            self.status_var.set(f"Lỗi: {e}")
-            messagebox.showerror("Lỗi", error_msg)
+            error_msg = f"Can not extract message: {e}"
+            print(f"Error: {error_msg}")
+            self.status_var.set(f"Error: {e}")
+            messagebox.showerror("Error", error_msg)
 
 if __name__ == "__main__":
     root = tk.Tk()
