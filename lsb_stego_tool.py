@@ -69,7 +69,10 @@ class LSBStegoApp:
         output_path = "output.png"  # Ảnh đầu ra cố định
 
         if not input_path or not message:
-            messagebox.showerror("Lỗi", "Vui lòng nhập tin nhắn và chọn ảnh đầu vào!")
+            error_msg = "Vui lòng nhập tin nhắn và chọn ảnh đầu vào!"
+            print(f"Lỗi: {error_msg}")
+            self.status_var.set(f"Lỗi: {error_msg}")
+            messagebox.showerror("Lỗi", error_msg)
             return
 
         try:
@@ -83,7 +86,11 @@ class LSBStegoApp:
             binary_message += '00000000'  # Null terminator
 
             if len(binary_message) > width * height:
-                raise ValueError("Tin nhắn quá dài để giấu trong ảnh!")
+                error_msg = "Tin nhắn quá dài để giấu trong ảnh!"
+                print(f"Lỗi: {error_msg}")
+                self.status_var.set(f"Lỗi: {error_msg}")
+                messagebox.showerror("Lỗi", error_msg)
+                raise ValueError(error_msg)
 
             index = 0
             for y in range(height):
@@ -96,18 +103,25 @@ class LSBStegoApp:
                     index += 1
 
             img.save(output_path)
-            self.status_var.set(f"Tin nhắn đã được giấu thành công vào {output_path}")
-            messagebox.showinfo("Thành công", f"Tin nhắn đã được giấu vào {output_path}")
+            success_msg = f"Tin nhắn đã được giấu thành công vào {output_path}"
+            print(success_msg)
+            self.status_var.set(success_msg)
+            messagebox.showinfo("Thành công", success_msg)
 
         except Exception as e:
+            error_msg = f"Không thể giấu tin nhắn: {e}"
+            print(f"Lỗi: {error_msg}")
             self.status_var.set(f"Lỗi: {e}")
-            messagebox.showerror("Lỗi", f"Không thể giấu tin nhắn: {e}")
+            messagebox.showerror("Lỗi", error_msg)
 
     def extract_message(self):
         input_path = self.extract_input_var.get()
 
         if not input_path:
-            messagebox.showerror("Lỗi", "Vui lòng chọn ảnh đầu vào!")
+            error_msg = "Vui lòng chọn ảnh đầu vào!"
+            print(f"Lỗi: {error_msg}")
+            self.status_var.set(f"Lỗi: {error_msg}")
+            messagebox.showerror("Lỗi", error_msg)
             return
 
         try:
@@ -132,18 +146,24 @@ class LSBStegoApp:
                         byte_str = ''.join(byte_buffer)
                         byte = int(byte_str, 2)
                         if byte == 0:
-                            self.status_var.set("Tin nhắn trích xuất: " + message)
-                            messagebox.showinfo("Tin nhắn", f"Tin nhắn: {message}")
+                            success_msg = f"Tin nhắn trích xuất: {message}"
+                            print(success_msg)
+                            self.status_var.set(success_msg)
+                            messagebox.showinfo("Tin nhắn", success_msg)
                             return
                         message += chr(byte)
                         byte_buffer = []
 
-            self.status_var.set("Không tìm thấy tin nhắn hoặc tin nhắn quá dài!")
-            messagebox.showwarning("Cảnh báo", "Không tìm thấy tin nhắn!")
+            warning_msg = "Không tìm thấy tin nhắn hoặc tin nhắn quá dài!"
+            print(warning_msg)
+            self.status_var.set(warning_msg)
+            messagebox.showwarning("Cảnh báo", warning_msg)
 
         except Exception as e:
+            error_msg = f"Không thể trích xuất tin nhắn: {e}"
+            print(f"Lỗi: {error_msg}")
             self.status_var.set(f"Lỗi: {e}")
-            messagebox.showerror("Lỗi", f"Không thể trích xuất tin nhắn: {e}")
+            messagebox.showerror("Lỗi", error_msg)
 
 if __name__ == "__main__":
     root = tk.Tk()
